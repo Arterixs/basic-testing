@@ -50,10 +50,7 @@ describe('BankAccount', () => {
     const randomNumber = Math.floor(Math.random() * 100);
     jest.spyOn(user1, 'fetchBalance').mockResolvedValue(randomNumber);
 
-    const result = await user1.fetchBalance();
-    const typeResult = typeof result;
-
-    expect(typeResult).toMatch(/number/);
+    await expect(user1.fetchBalance()).resolves.toEqual(expect.any(Number));
   });
 
   test('should set new balance if fetchBalance returned number', async () => {
