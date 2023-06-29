@@ -7,9 +7,9 @@ jest.mock('./index', () => {
   return {
     __esModule: true,
     ...originalModule,
-    mockOne: () => 'foo',
-    mockTwo: () => 'bar',
-    mockThree: () => 'baz',
+    mockOne: jest.fn,
+    mockTwo: jest.fn,
+    mockThree: jest.fn,
   };
 });
 
@@ -20,11 +20,11 @@ describe('partial mocking', () => {
 
   test('mockOne, mockTwo, mockThree should not log into console', () => {
     const logSpy = jest.spyOn(console, 'log');
-    expect(mockOne()).toMatch(/^foo$/);
+    mockOne();
     expect(logSpy).not.toHaveBeenCalled();
-    expect(mockTwo()).toMatch(/^bar$/);
+    mockTwo();
     expect(logSpy).not.toHaveBeenCalled();
-    expect(mockThree()).toMatch(/^baz$/);
+    mockThree();
     expect(logSpy).not.toHaveBeenCalled();
   });
 
