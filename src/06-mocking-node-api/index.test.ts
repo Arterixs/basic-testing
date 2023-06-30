@@ -5,6 +5,8 @@ import fs from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
 
+const callback = jest.fn();
+
 describe('doStuffByTimeout', () => {
   beforeAll(() => {
     jest.useFakeTimers();
@@ -16,13 +18,11 @@ describe('doStuffByTimeout', () => {
 
   test('should set timeout with provided callback and timeout', () => {
     jest.spyOn(global, 'setTimeout');
-    const callback = jest.fn();
     doStuffByTimeout(callback, 2000);
     expect(setTimeout).toHaveBeenCalledWith(callback, 2000);
   });
 
   test('should call callback only after timeout', () => {
-    const callback = jest.fn();
     doStuffByTimeout(callback, 2000);
 
     expect(callback).not.toBeCalled();
@@ -42,8 +42,6 @@ describe('doStuffByInterval', () => {
 
   test('should set interval with provided callback and timeout', () => {
     jest.spyOn(global, 'setInterval');
-    const callback = jest.fn();
-
     doStuffByInterval(callback, 2000);
     expect(setInterval).toHaveBeenLastCalledWith(callback, 2000);
     jest.clearAllTimers();
@@ -51,8 +49,6 @@ describe('doStuffByInterval', () => {
 
   test('should call callback multiple times after multiple intervals', () => {
     jest.spyOn(global, 'setInterval');
-    const callback = jest.fn();
-
     doStuffByInterval(callback, 2000);
     jest.advanceTimersByTime(6000);
     expect(callback).toHaveBeenCalledTimes(3);
